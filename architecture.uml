@@ -1,0 +1,35 @@
+@startuml
+
+package "L2_1" {
+
+    [sequencer1]
+}
+
+package "L2_2" {
+    [sequencer2]
+}
+
+package "DAO" {
+  
+
+  cloud "precompiled_contracts" {
+     addr2 - [src2_send]
+     addr1 - [src2_verify]
+  }
+  [rpc_sequencer]
+  [sequencer1] -->[rpc_sequencer] : (1)
+  [rpc_sequencer] ..> addr1 : (2)
+  addr1 ..> [rpc_sequencer] : (3)
+  [rpc_sequencer] ..> addr2 : (5)
+  addr2 --> sequencer2 : (6)
+  addr2 ..> [rpc_sequencer] : (7)
+
+  database "contract_src" {
+        [send_src2_v2.x] . [send_src2_v1.x] : version
+        [verify_src2_release] . [verify_src2_v2.x] : version
+
+    }
+}
+
+
+@enduml
